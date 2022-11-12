@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt-get -y update && apt-get -y install git wget unzip curl netcat rsync
+RUN apt-get -y update && apt-get -y install git wget unzip curl netcat rsync gpg pass
 
 # Install fonts
 WORKDIR /root/.local/share/fonts
