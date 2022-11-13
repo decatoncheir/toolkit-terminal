@@ -1,14 +1,33 @@
+# syntax=docker/dockerfile:1.4
+
 FROM ubuntu:latest
 
-RUN apt-get -y update && apt-get -y install git wget unzip curl netcat rsync gpg pass
+
+RUN <<EOT
+apt-get -y update
+apt-get -y upgrade
+apt-get -y install \
+    git \
+    wget \
+    unzip \
+    curl \
+    netcat \
+    rsync \
+    gpg \
+    pass
+EOT
 
 # Install fonts
-WORKDIR /root/.local/share/fonts
 WORKDIR /tmp
-RUN wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FiraCode.zip && unzip FiraCode.zip -d /root/.local/share/fonts
+RUN <<EOT
+mkdir -p /root/.local/share/fonts
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FiraCode.zip && unzip FiraCode.zip -d /root/.local/share/fonts
+EOT
 
 # Install Starship
-RUN wget https://starship.rs/install.sh && chmod 700 install.sh && ./install.sh -y
-RUN echo "eval \"\$(starship init bash)\"" >> ~/.bashrc
+RUN <<EOT
+wget https://starship.rs/install.sh && chmod 700 install.sh && ./install.sh -y
+echo "eval \"\$(starship init bash)\"" >> ~/.bashrc
+EOT
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
