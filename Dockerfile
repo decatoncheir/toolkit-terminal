@@ -14,7 +14,8 @@ apt-get -y install \
     netcat \
     rsync \
     gpg \
-    pass
+    pass \
+    openssh-server
 EOT
 
 # Install fonts
