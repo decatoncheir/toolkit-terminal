@@ -16,19 +16,18 @@ apt-get -y install \
     gpg \
     pass \
     openssh-server
+rm -rf /var/lib/apt/lists/*
 EOT
 
-# Install fonts
-WORKDIR /tmp
-RUN <<EOT
+RUN --mount=type=tmpfs,target=/tmp,size=100M <<EOT
+cd /tmp
+echo "Install Nerd Fonts"
 mkdir -p /root/.local/share/fonts
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FiraCode.zip && unzip FiraCode.zip -d /root/.local/share/fonts
-EOT
-
-# Install Starship
-RUN <<EOT
+echo "Install Starship"
 wget https://starship.rs/install.sh && chmod 700 install.sh && ./install.sh -y
 echo "eval \"\$(starship init bash)\"" >> ~/.bashrc
+cd
 EOT
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
